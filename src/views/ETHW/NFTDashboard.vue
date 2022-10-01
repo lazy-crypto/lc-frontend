@@ -151,7 +151,6 @@
                             this.data_assets.push(obj);
                         });
                         
-                        this.$set()
                         this.chain = this.collection_data.chain;
 
                         this.$forceUpdate()
@@ -167,7 +166,9 @@
             }
         },
         created() {
-            this.fetchDataNFT("beatles")
+            // Default fetch Beatles
+            // https://www.nuwton.io/collection/EthereumPow/0x650c3cf4fae84c3a23a1d6f11712734efadbef5d
+            this.fetchDataNFT("0x650c3cf4fae84c3a23a1d6f11712734efadbef5d")
         },
 
     })
