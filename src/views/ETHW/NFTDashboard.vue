@@ -167,7 +167,7 @@
             }
         },
         created() {
-            this.fetchDataNFT("uniwpunk")
+            this.fetchDataNFT("beatles")
         },
 
     })
