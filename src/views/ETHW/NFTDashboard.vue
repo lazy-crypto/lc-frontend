@@ -1,6 +1,13 @@
 <template>
     <div>
-        <h4> {{collection_data.name}} ({{collection_data.symbol}})</h4>
+        <a-row>
+            <a-col :span="6">
+                <h4> {{collection_data.name}} ({{collection_data.symbol}})</h4>
+            </a-col>
+            <a-col :span="3">
+                <NFTSelect @handleChange="selectContract"></NFTSelect>
+            </a-col>
+        </a-row>
         
         <!-- Counter Widgets -->
         <a-row :gutter="24">
@@ -93,6 +100,8 @@
     import CardInfo2 from '../../components/Cards/CardInfo2' ;
 
     import NFTCollection from "../../domain/entities/NFTCollection";
+    
+    import NFTSelect from '../../components/NFT/NFTSelect' ;
 
     export default ({
         components: {
@@ -103,17 +112,18 @@
             CardInfo,
             CardInfo2,
             NFTAsset,
+            NFTSelect
         },
 
         data() {
             return {
                 //
                 collection_data: {
-                    name: "NFT collection",
+                    name: "NFT",
                     symbol: "NFT",
                     total_owner: 0,
-                    total_quantity: 1000,
-                    total_volume: 24706.9505
+                    total_quantity: 0,
+                    total_volume: 0
                 },
                 // assetLists
                 data_assets: [],
@@ -124,27 +134,40 @@
             }
         },
         methods: {
-            fetchDataNFT() {
-                EthWService.getNFTAssetNuwtonIO("uniwpunk").then(response => {
-                    console.log(response);
+            fetchDataNFT(token) {
+                EthWService.getNFTAssetNuwtonIO(token).then(response => {
                     if (response.data.hasOwnProperty('collection')) {
-                        this.collection_data = new NFTCollection(response.data.collection);
+                        // Clear all old state, data
+                        this.reset();
+                        
+                        // this.collection_data = new NFTCollection(response.data.collection);
+                        this.collection_data = response.data.collection;
                         response.data.assets.forEach( (asset) => {
                             // asset.Image = asset.Image.replace("//", "")
                             let obj = {
                                 key: asset.Id,
-                                asset: new NFT(asset)
-                            }
-                            this.data_assets.push(obj)
+                                asset: asset
+                            };
+                            this.data_assets.push(obj);
                         });
                         
+                        this.$set()
                         this.chain = this.collection_data.chain;
+
+                        this.$forceUpdate()
                     }
                 })
             },
+            selectContract(token) {
+                this.fetchDataNFT(token)
+            },
+            reset(){
+                this.collection_data = new NFTCollection();
+                this.data_assets = [];
+            }
         },
         created() {
-            this.fetchDataNFT()
+            this.fetchDataNFT("uniwpunk")
         },
 
     })
