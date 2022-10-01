@@ -23,7 +23,7 @@
 
 <script>
 
-    // Bar chart for "Active Users" card.
+	// Bar chart for "Active Users" card.
     import CardBarChart from '../../components/Cards/CardBarChart' ;
 
     // Line chart for "Sales Overview" card.
@@ -205,7 +205,7 @@
             CardInfo2,
         },
         data() {
-            return {
+			return {
 
                 // Associating table data with its corresponding property.
                 tableData,
