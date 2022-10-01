@@ -1,8 +1,7 @@
 import axios from 'axios'
-import config from 'config/app.base'
 
 const http = axios.create({
-  baseURL: config.baseApiUrl,
+  baseURL: process.env.VUE_APP_ETHW_API_URL,
   // Add header or another config here
   headers: {
     // 'Content-Type': 'application/json;charset=UTF-8',

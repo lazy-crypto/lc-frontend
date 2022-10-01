@@ -1,5 +1,4 @@
 import axios from 'axios'
-import config from 'config/app.base'
 import authService from 'domain/services/auth-service'
 
 const httpAuth = axios.create({

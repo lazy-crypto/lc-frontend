@@ -1,32 +1,51 @@
 <template>
     <div>
-        
-
+	<h3>Etherum Proof Of Work</h3>
+		<h4>Nuwton NFT</h4>
+		<!-- Counter Widgets -->
+		<a-row :gutter="24">
+			<a-col :span="24" :lg="12" :xl="6" class="mb-24" v-for="(stat, index) in stats" :key="index">
+				<!-- Widget 1 Card -->
+				<WidgetCounter
+						:title="stat.title"
+						:value="stat.value"
+						:prefix="stat.prefix"
+						:suffix="stat.suffix"
+						:icon="stat.icon"
+						:status="stat.status"
+				></WidgetCounter>
+				<!-- / Widget 1 Card -->
+			</a-col>
+		</a-row>
+		<!-- / Counter Widgets -->
     </div>
 </template>
 
 <script>
+	import EthWService from '../../domain/services/ethw-nft-service'
 
     // Bar chart for "Active Users" card.
-    import CardBarChart from '../components/Cards/CardBarChart' ;
+    import CardBarChart from '../../components/Cards/CardBarChart' ;
 
     // Line chart for "Sales Overview" card.
-    import CardLineChart from '../components/Cards/CardLineChart' ;
+    import CardLineChart from '../../components/Cards/CardLineChart' ;
 
     // Counter Widgets
-    import WidgetCounter from '../components/Widgets/WidgetCounter' ;
+    import WidgetCounter from '../../components/Widgets/WidgetCounter' ;
 
     // "Projects" table component.
-    import CardProjectTable from '../components/Cards/CardProjectTable' ;
+    import CardProjectTable from '../../components/Cards/CardProjectTable' ;
 
     // Order History card component.
-    import CardOrderHistory from '../components/Cards/CardOrderHistory' ;
+    import CardOrderHistory from '../../components/Cards/CardOrderHistory' ;
 
     // Information card 1.
-    import CardInfo from '../components/Cards/CardInfo' ;
+    import CardInfo from '../../components/Cards/CardInfo' ;
 
     // Information card 2.
-    import CardInfo2 from '../components/Cards/CardInfo2' ;
+    import CardInfo2 from '../../components/Cards/CardInfo2' ;
+    
+    let nft_assets = [];
 
     // Counter Widgets stats
     const stats = [
@@ -188,6 +207,14 @@
             CardInfo,
             CardInfo2,
         },
+		methods: {
+			fetchDataNFT(){
+				nft_assets = EthWService.getNFTAssetNuwtonIO('uniwpunk')
+			},
+		},
+		created () {
+			this.fetchDataNFT()
+		},
         data() {
             return {
 
