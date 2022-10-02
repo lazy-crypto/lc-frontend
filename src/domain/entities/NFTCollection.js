@@ -14,5 +14,4 @@ export default class NFTCollection extends BaseEntity {
     total_quantity = 1000;
     total_volume = "24706.9505"
     chain = new Chain()
-    
 }
