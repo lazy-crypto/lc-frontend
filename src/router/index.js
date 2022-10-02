@@ -1,112 +1,28 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
+import { constantRouterMap } from '@/config/router.config'
 
-Vue.use(VueRouter)
-
-let routes = [
-	{
-		// will match everything
-		path: '*',
-		component: () => import('../views/404.vue'),
-	},
-	{
-		path: '/',
-		name: 'Home',
-		redirect: '/dashboard',
-	},
-	{
-		path: '/dashboard',
-		name: 'Dashboard',
-		layout: "dashboard",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
-	},
-	{
-		path: '/ethw',
-		name: 'ETHW chain - NFT / Token',
-		layout: "dashboard",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "dashboard" */ '../views/ETHW/NFTDashboard.vue'),
-	},
-	{
-		path: '/layout',
-		name: 'Layout',
-		layout: "dashboard",
-		component: () => import('../views/Layout.vue'),
-	},
-	{
-		path: '/tables',
-		name: 'Tables',
-		layout: "dashboard",
-		component: () => import('../views/Tables.vue'),
-	},
-	{
-		path: '/billing',
-		name: 'Billing',
-		layout: "dashboard",
-		component: () => import('../views/Billing.vue'),
-	},
-	{
-		path: '/Profile',
-		name: 'Profile',
-		layout: "dashboard",
-		meta: {
-			layoutClass: 'layout-profile',
-		},
-		component: () => import('../views/Profile.vue'),
-	},
-	{
-		path: '/sign-in',
-		name: 'Sign-In',
-		component: () => import('../views/Sign-In.vue'),
-	},
-	{
-		path: '/sign-up',
-		name: 'Sign-Up',
-		meta: {
-			layoutClass: 'layout-sign-up',
-		},
-		component: () => import('../views/Sign-Up.vue'),
-	},
-]
-
-// Adding layout property from each route to the meta
-// object so it can be accessed later.
-function addLayoutToRoute( route, parentLayout = "default" )
-{
-	route.meta = route.meta || {} ;
-	route.meta.layout = route.layout || parentLayout ;
-	
-	if( route.children )
-	{
-		route.children = route.children.map( ( childRoute ) => addLayoutToRoute( childRoute, route.meta.layout ) ) ;
-	}
-	return route ;
+// hack router push callback
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
 }
 
-routes = routes.map( ( route ) => addLayoutToRoute( route ) ) ;
+Vue.use(Router)
 
-const router = new VueRouter({
-	mode: 'hash',
-	base: process.env.BASE_URL,
-	routes,
-	scrollBehavior (to, from, savedPosition) {
-		if ( to.hash ) {
-			return {
-				selector: to.hash,
-				behavior: 'smooth',
-			}
-		}
-		return {
-			x: 0,
-			y: 0,
-			behavior: 'smooth',
-		}
-	}
-})
+const createRouter = () =>
+  new Router({
+    mode: 'history',
+    routes: constantRouterMap
+  })
+
+const router = createRouter()
+
+// 定义一个resetRouter 方法，在退出登录后或token过期后 需要重新登录时，调用即可
+export function resetRouter () {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher
+}
 
 export default router

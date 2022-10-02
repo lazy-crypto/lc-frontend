@@ -1,38 +1,42 @@
-/*
-=========================================================
-Muse - Vue Ant Design Dashboard - v1.0.0
-=========================================================
-
-Product Page: https://www.creative-tim.com/product/vue-ant-design-dashboard
-Copyright 2021 Creative Tim (https://www.creative-tim.com)
-Coded by Creative Tim
-
-=========================================================
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. 
-*/
+// with polyfills
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 import Vue from 'vue'
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
 import App from './App.vue'
-import DefaultLayout from './layouts/Default.vue'
-import DashboardLayout from './layouts/Dashboard.vue'
-import DashboardRTLLayout from './layouts/DashboardRTL.vue'
 import router from './router'
-// import './plugins/click-away'
+import store from './store/'
+import i18n from './locales'
+import { VueAxios } from './utils/request'
+import ProLayout, { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
+import themePluginConfig from '../config/themePluginConfig'
 
-import './scss/app.scss';
+// mock
+// WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
+import './mock'
 
-Vue.use(Antd);
+import bootstrap from './core/bootstrap'
+import './core/lazy_use' // use lazy load components
+import './permission' // permission control
+import './utils/filter' // global filter
+import './global.less' // global style
 
 Vue.config.productionTip = false
 
-// Adding template layouts to the vue components.
-Vue.component("layout-default", DefaultLayout);
-Vue.component("layout-dashboard", DashboardLayout);
-Vue.component("layout-dashboard-rtl", DashboardRTLLayout);
+// mount axios to `Vue.$http` and `this.$http`
+Vue.use(VueAxios)
+// use pro-layout components
+Vue.component('pro-layout', ProLayout)
+Vue.component('page-container', PageHeaderWrapper)
+Vue.component('page-header-wrapper', PageHeaderWrapper)
+
+window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
 new Vue({
   router,
+  store,
+  i18n,
+  // init localstorage, vuex, Logo message
+  created: bootstrap,
   render: h => h(App)
 }).$mount('#app')
