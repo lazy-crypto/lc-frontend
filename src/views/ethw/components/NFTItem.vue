@@ -3,8 +3,9 @@
     <a-list-item-meta :description="item.description">
       <!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
       <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
-      <a slot="title"><b>{{ item.title }}</b> | {{ item.id }}</a>
+      <a slot="title"><b>{{ item.title }}</b> | {{ item.id }} ({{metadata.rank}} / {{metadata.totalRarity}})</a>
       <a slot="description"><b>{{ item.price }}</b></a>
+
     </a-list-item-meta>
     <div slot="actions">
       <a @click="edit(item)">Edit</a>
@@ -56,7 +57,7 @@ export default {
         progress: {
           value: 90
         },
-        price: 0
+        price: 0,
       }
     }
   },

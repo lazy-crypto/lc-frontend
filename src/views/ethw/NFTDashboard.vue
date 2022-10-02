@@ -99,7 +99,7 @@
                             // asset.Image = asset.Image.replace("//", "")
                             let obj =
                                 {
-                                    id: asset.Id,
+                                    id: asset.TokenId,
                                     title: asset.Name,
                                     avatar: asset.Image,
                                     description: '',
