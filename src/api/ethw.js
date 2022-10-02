@@ -2,6 +2,7 @@ import request from '@/utils/request_api'
 
 const ethwApi = {
   Collections: '/ethw/nft/collections',
+  GetListAssets: '/ethw/nft/nuwton/assets',
 }
 
 /**
@@ -27,7 +28,7 @@ export function GetCollections (parameter) {
  */
 export function GetNFTAssetLists (contract) {
   return request({
-    url: ethwApi.Collections,
+    url: ethwApi.GetListAssets,
     method: 'get',
     params: {
       contract: contract
