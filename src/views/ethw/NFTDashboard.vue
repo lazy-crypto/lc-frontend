@@ -33,9 +33,10 @@
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data_assets">
           <a-list-item-meta :description="item.description">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
-            <a slot="title">{{ item.title }}</a>
-            <a slot="description"><b>{{ item.id }}</b></a>
+<!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
+            <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
+            <a slot="title"><b>{{ item.title }}</b> | {{item.id}}</a>
+            <a slot="description"><b>{{ item.price }}</b></a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="edit(item)">Edit</a>
@@ -53,7 +54,7 @@
           <div class="list-content">
             <div class="list-content-item">
               <span>Owner</span>
-              <p>{{item.owner}}</p>
+              <p><a :href="ethw_wallet_url + item.owner" target="_blank">{{item.owner}}</a></p>
             </div>
             <div class="list-content-item">
               <span>LISTED TIME</span>
@@ -113,6 +114,7 @@
                     is_testnet: false
                 },
                 status: 'processing',
+                ethw_wallet_url: process.env.VUE_APP_ETHW_WALLET_URL
             }
         },
         methods: {
