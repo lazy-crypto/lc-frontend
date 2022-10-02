@@ -31,41 +31,7 @@
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
-        <a-list-item :key="index" v-for="(item, index) in data_assets">
-          <a-list-item-meta :description="item.description">
-<!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
-            <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
-            <a slot="title"><b>{{ item.title }}</b> | {{item.id}}</a>
-            <a slot="description"><b>{{ item.price }}</b></a>
-          </a-list-item-meta>
-          <div slot="actions">
-            <a @click="edit(item)">Edit</a>
-          </div>
-          <div slot="actions">
-            <a-dropdown>
-              <a-menu slot="overlay">
-                <a-menu-item><a>Goto</a></a-menu-item>
-              </a-menu>
-              <a>Add
-                <a-icon type="down"/>
-              </a>
-            </a-dropdown>
-          </div>
-          <div class="list-content">
-            <div class="list-content-item">
-              <span>Owner</span>
-              <p><a :href="ethw_wallet_url + item.owner" target="_blank">{{item.owner}}</a></p>
-            </div>
-            <div class="list-content-item">
-              <span>LISTED TIME</span>
-              <p>{{ item.startAt }}</p>
-            </div>
-            <div class="list-content-item">
-              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status"
-                          style="width: 180px"/>
-            </div>
-          </div>
-        </a-list-item>
+        <NFTItem :item="item" v-for="(item, index) in data_assets"></NFTItem>
       </a-list>
     </a-card>
   </page-header-wrapper>
@@ -74,7 +40,8 @@
 <script>
     import TaskForm from './modules/TaskForm'
     import Info from './components/Info'
-    import {GetCollections, GetNFTAssetLists} from '@/api/ethw'
+    import NFTItem from "@/views/ethw/components/NFTItem";
+    import {GetCollections, GetNFTAssetLists} from '@/api/nft'
     import NFTCollection from "@/domain/entities/NFTCollection"
     // import EthWService from './../../infrastructures/'
     let collection_data;
@@ -86,13 +53,15 @@
             "contract ": "0x650c3cf4fae84c3a23a1d6f11712734efadbef5d",
             "name": "Beatles"
         },
-    ]
+    ];
+    let ethw_wallet_url;
 
     export default {
-        name: 'ETHWDashboardNFT',
+        name: 'DashboardNFT',
         components: {
             TaskForm,
-            Info
+            Info,
+            NFTItem
         },
         data() {
             return {
@@ -119,7 +88,7 @@
         },
         methods: {
             fetchDataNFT(token) {
-                GetNFTAssetLists(token).then(response => {
+                GetNFTAssetLists("ethw", token).then(response => {
                     if (response.hasOwnProperty('collection')) {
                         // Clear all old state, data
                         this.reset();
@@ -153,7 +122,7 @@
                 })
             },
             selectContract(token) {
-                this.fetchDataNFT(token)
+                this.fetchDataNFT("ethw", token)
             },
             
             // Fetch list enable collections
