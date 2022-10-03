@@ -17,17 +17,17 @@ export const asyncRouterMap = [
     children: [
       // dashboard
       {
-        path: '/ethw',
-        name: 'ethw',
-        redirect: '/ethw/dashboard',
+        path: '/nft',
+        name: 'nft',
+        redirect: '/nft/dashboard',
         component: RouteView,
-        meta: { title: 'ethw.dashboard', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
+        meta: { title: 'nft.dashboard', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
           {
-            path: '/ethw/nft/dashboard',
-            name: 'Analysis',
-            component: () => import('@/views/ethw/NFTDashboard'),
-            meta: { title: 'ethw.nft.dashboard', keepAlive: false, permission: ['dashboard'] }
+            path: '/nft/dashboard/listed',
+            name: 'Listed NFT',
+            component: () => import('@/views/nft/NFTDashboard'),
+            meta: { title: 'nft.listed', keepAlive: false, permission: ['dashboard'] }
           },
         ]
       },

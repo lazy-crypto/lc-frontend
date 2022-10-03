@@ -38,6 +38,6 @@ export default {
     'menu.account.logout': 'Logout',
     
     // PROJECT
-    'ethw.dashboard': "ETHW Chain",
-    'ethw.nft.dashboard': "NFT Dashboard",
+    'nft.dashboard': "NFT Dashboard",
+    'nft.listed': "NFT Listed",
 }
