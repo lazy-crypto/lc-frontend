@@ -3,8 +3,12 @@
     <a-list-item-meta :description="item.description">
       <!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
       <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
-      <a slot="title"><b>{{ item.title }}</b> | {{ item.id }} ({{metadata.rank}} / {{metadata.totalRarity}})</a>
+      <a slot="title"><b>{{ item.title }}</b> {{ item.id }}</a>
       <a slot="description"><b>{{ item.price }}</b></a>
+      <a slot="description" v-if="metadata.rank"> 
+        - RANK : {{metadata.rank}}
+        - RARITY : {{metadata.totalRarity}}
+      </a>
 
     </a-list-item-meta>
     <div slot="actions">

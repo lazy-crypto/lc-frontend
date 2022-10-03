@@ -1,14 +1,14 @@
 <template>
   <page-header-wrapper>
-    <HolderChart></HolderChart>
+<!--    <HolderChart></HolderChart>-->
   </page-header-wrapper>
 </template>
 
 <script>
-import HolderChart from "@/views/ethw/components/HolderChart";
+import HolderChart from "@/views/holder/components/HolderChart";
 
 export default {
-  name: 'DashboardNFT',
+  name: 'HolderDashboard',
   components: {
     HolderChart
   },
