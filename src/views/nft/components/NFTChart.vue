@@ -32,11 +32,19 @@ export default {
         //   fillTo: -20,
         // },
         chart: {
-          height: 150,
+          redrawOnParentResize: true,
+          height: "150px",
           type: 'line',
+          zoom: {
+            enabled: false,
+            autoScaleYaxis: false,
+            zoomedArea: {
+              
+            }
+          }
         },
         stroke: {
-          width: [3, 2]
+          width: [3, 4]
         },
         title: {
           text: 'NFT'
@@ -47,7 +55,7 @@ export default {
         },
 
         markers: {
-          size: 3,
+          size: 0,
           colors: 'rgba(213,167,167,0.73)',
           strokeColors: 'rgba(0,227,150,0.2)',
           strokeWidth: 2,
