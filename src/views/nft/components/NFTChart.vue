@@ -1,110 +1,129 @@
 <template>
   <div>
-    <apexchart type="area" height="350" :options="chartOptions" :series="dataChart"></apexchart>
+    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="enable"></apexchart>
   </div>
 </template>
 
 <script>
-const DataSet = require('@antv/data-set');
-import {GetChartData, GetMetadata} from '@/api/nft'
+import {GetChartData} from '@/api/nft'
 import VueApexCharts from 'vue-apexcharts'
-import moment from "moment";
 import Vue from "vue";
-// import moment from 'moment-timezone'
-
-
-
-let dataHolders = []
-let dataPrices = []
-let dataChart = [
-  {
-    name: 'Price',
-    data: []
-  },
-  {
-    name: 'Holders',
-    data: []
-  }
-]
 
 
 export default {
   name: "NFTChart",
   data() {
     return {
-      dataHolders,
-      dataPrices,
-      dataChart,
+      series: [{
+        name: '',
+        type: 'column',
+        data: []
+      }, {
+        name: '',
+        type: 'line',
+        data: []
+      }],
+      enable: false,
       chartOptions: {
+        // fill: {
+        //   colors: '#0000ff',
+        //   opacity: 0.9,
+        //   type: 'gradient',
+        //   fillTo: -20,
+        // },
         chart: {
+          height: 150,
           type: 'line',
-          height: 350
-        },
-        dataLabels: {
-          enabled: false
         },
         stroke: {
-          curve: 'smooth'
+          width: [3, 2]
         },
-
         title: {
-          text: 'NFT overview',
-          align: 'left',
-          style: {
-            fontSize: '14px'
-          }
+          text: 'NFT'
         },
-        xaxis: {
-          type: 'datetime',
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false
-          }
+        dataLabels: {
+          enabled: false,
+          enabledOnSeries: [1]
         },
-        yaxis: {
-          tickAmount: 4,
-          floating: true,
 
-          labels: {
-            style: {
-              colors: '#8e8da4',
-            },
-            offsetY: -7,
-            offsetX: 0,
-          },
-          axisBorder: {
-            show: false,
-          },
+        markers: {
+          size: 3,
+          colors: 'rgba(213,167,167,0.73)',
+          strokeColors: 'rgba(0,227,150,0.2)',
+          strokeWidth: 2,
+          strokeOpacity: 0.9,
+          strokeDashArray: 0,
+          fillOpacity: 1,
+          discrete: [],
+          shape: "circle",
+          radius: 2,
+          offsetX: 0,
+          offsetY: 0,
+          onClick: undefined,
+          onDblClick: undefined,
+          showNullDataPoints: true,
+          hover: {
+            size: undefined,
+            sizeOffset: 3
+          }
+        },
+        labels: [],
+        // https://apexcharts.com/docs/options/xaxis/
+        
+        xaxis: {
+          tickAmount: 5,
+          type: "string",
           axisTicks: {
-            show: true
-          }
-        },
-        fill: {
-          opacity: 0.5
-        },
-        tooltip: {
-          x: {
-            format: "YY-MM-DD hh:mm:ss",
+            show: true,
+            borderType: 'solid',
+            color: '#78909C',
+            height: 6,
+            offsetX: 0,
+            offsetY: 0
           },
-          fixed: {
-            enabled: false,
-            position: 'topRight'
-          }
-        },
-        grid: {
-          yaxis: {
-            lines: {
-              offsetX: -30
-            }
+          labels: {
+            show: true,
+            rotate: 0,
+            rotateAlways: false,
+            hideOverlappingLabels: true,
+            showDuplicates: false,
+            trim: false,
+            minHeight: undefined,
+            maxHeight: 120,
+            style: {
+              colors: [],
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 400,
+              cssClass: 'apexcharts-xaxis-label',
+            },
+            offsetX: 0,
+            offsetY: 0
           },
-          padding: {
-            left: 20
+          tickPlacement: 'on'
+        },
+        yaxis: [{
+          title: {
+            text: 'Holders',
+          },
+          crosshairs: {
+            show: true,
+            position: 'back',
+            stroke: {
+              color: '#b6b6b6',
+              width: 1,
+              dashArray: 0,
+            },
+          },
+
+        }, {
+          opposite: true,
+          title: {
+            text: 'Price'
           }
-        }
+        }]
       },
-    };
+    }
   },
   props: {
     contract: {
@@ -124,35 +143,35 @@ export default {
     getChartData (from, to) {
       GetChartData(this.chain, this.contract, from, to).then(response => {
         if (response.hasOwnProperty("success") && response.success) {
+          let prices = []
+          let holders = []
+          let dataXAxis= []
           response.data.forEach((val) => {
-            this.dataPrices.push({
-              x:val.created,
-              y: val.price
-            })
-            this.dataHolders.push({
-              x:val.created,
-              y: val.holders
-            })
+            prices.push((val.price))
+            holders.push(val.holders)
+            dataXAxis.push(Vue.moment(val.created).format('YY-MM-DD hh:mm:ss'))
           })
-          this.dataChart = [
-            {
-              name: 'Price',
-              data: this.dataPrices
-            },
-            {
-              name: 'Holders',
-              data: this.dataHolders
-            }
-          ]
+          
+          this.series = [{
+            name: 'Holders',
+            type: 'line',
+            data: holders
+          }, {
+            name: 'Price',
+            type: 'line',
+            data: prices
+          }]
+          
+          Vue.set(this.chartOptions, "labels", dataXAxis)
+          this.$forceUpdate()
+          this.enable = true
         }
       })
     },
   },
   created() {
-    let from = Vue.moment().subtract(12, 'hours').format('YYYY-MM-DD hh-mm-ss')
-
-    console.log(from)
-    let to = Vue.moment().format('YYYY-MM-DD hh-mm-ss')
+    let from = Vue.moment().subtract(7.5, 'hours').format('YYYY-MM-DD hh:mm:ss')
+    let to = Vue.moment().subtract(7, 'hours').format('YYYY-MM-DD hh:mm:ss')
     console.log(to)
     this.getChartData(from, to)
   }
