@@ -156,7 +156,7 @@ export default {
           let dataXAxis= []
           response.data.forEach((val) => {
             prices.push((val.price))
-            holders.push(val.holders)
+            holders.push(parseInt(val.holders))
             dataXAxis.push(Vue.moment(val.created).format('YY-MM-DD hh:mm:ss'))
           })
           
@@ -176,6 +176,14 @@ export default {
         }
       })
     },
+  },
+  watch: {
+    contract (val) {
+      console.log("Re-draw chart")
+      let from = Vue.moment().subtract(7.5, 'hours').format('YYYY-MM-DD hh:mm:ss')
+      let to = Vue.moment().subtract(7, 'hours').format('YYYY-MM-DD hh:mm:ss')
+      this.getChartData(from, to)
+    }
   },
   created() {
     let from = Vue.moment().subtract(7.5, 'hours').format('YYYY-MM-DD hh:mm:ss')
