@@ -25,6 +25,7 @@ export default {
       }],
       enable: false,
       chartOptions: {
+        colors : ['#16c784', '#a0a5ae'],
         // fill: {
         //   colors: '#0000ff',
         //   opacity: 0.9,
@@ -38,13 +39,12 @@ export default {
           zoom: {
             enabled: false,
             autoScaleYaxis: false,
-            zoomedArea: {
-              
-            }
-          }
+            zoomedArea: {}
+          },
+          background: '#fff'
         },
         stroke: {
-          width: [3, 4]
+          width: [3, 1]
         },
         title: {
           text: 'NFT'
@@ -76,6 +76,11 @@ export default {
           }
         },
         labels: [],
+        brush: {
+          enabled: false,
+          target: undefined,
+          autoScaleYaxis: true
+        },
         // https://apexcharts.com/docs/options/xaxis/
         
         xaxis: {
@@ -110,26 +115,74 @@ export default {
           },
           tickPlacement: 'on'
         },
-        yaxis: [{
-          title: {
-            text: 'Holders',
-          },
-          crosshairs: {
-            show: true,
-            position: 'back',
-            stroke: {
-              color: '#b6b6b6',
-              width: 1,
-              dashArray: 0,
+        yaxis: [
+          {
+            title: {
+              text: 'Price'
             },
+            min: 1,
+            forceNiceScale:true
+            //max: 0,
           },
-
-        }, {
-          opposite: true,
-          title: {
-            text: 'Price'
+          {
+            opposite: true,
+            forceNiceScale:true,
+            title: {
+              text: 'Holders',
+            },
+            min: 0,
+            max: this.total_supply,
+            axisBorder: {
+              show: true,
+              color: '#78909C',
+              offsetX: 0,
+              offsetY: 0
+            },
+            crosshairs: {
+              show: true,
+              position: 'back',
+              stroke: {
+                color: '#b6b6b6',
+                width: 1,
+                dashArray: 0,
+              },
+            },
+            background: '#fff',
+            axisTicks: {
+              show: true,
+              borderType: 'solid',
+              color: '#78909C',
+              width: 6,
+              offsetX: 0,
+              offsetY: 0
+            },
+            labels: {
+              show: true,
+              align: 'right',
+              minWidth: 0,
+              maxWidth: 160,
+              style: {
+                fontSize: "12px",
+                fontWeight: 400,
+                fontFamily: "Open Sans",
+                // colors: ["#7286EA"],
+                backgroundColor: '#e7e7e7',
+              },
+              offsetX: 0,
+              offsetY: 0,
+              rotate: 0
+            },
+            // crosshairs: {
+            //   show: true,
+            //   position: 'back',
+            //   stroke: {
+            //     color: '#b6b6b6',
+            //     width: 1,
+            //     dashArray: 0,
+            //   },
+            // },
           }
-        }]
+        ]
       },
     }
   },
@@ -137,6 +190,10 @@ export default {
     contract: {
       type: String,
       default: ""
+    },
+    total_supply: {
+      type: Number,
+      default: 10000
     },
     chain: {
       type: String,
@@ -148,28 +205,29 @@ export default {
   },
   methods: {
     // Fetch list enable collections
-    getChartData (from, to) {
+    getChartData(from, to) {
       GetChartData(this.chain, this.contract, from, to).then(response => {
         if (response.hasOwnProperty("success") && response.success) {
           let prices = []
           let holders = []
-          let dataXAxis= []
+          let dataXAxis = []
           response.data.forEach((val) => {
             prices.push((val.price))
             holders.push(parseInt(val.holders))
             dataXAxis.push(Vue.moment(val.created).format('YY-MM-DD hh:mm:ss'))
           })
-          
+
           this.series = [{
-            name: 'Holders',
-            type: 'line',
-            data: holders
-          }, {
-            name: 'Price',
-            type: 'line',
-            data: prices
-          }]
-          
+              name: 'Price',
+              type: 'line',
+              data: prices
+            },
+            {
+              name: 'Holders',
+              type: 'column',
+              data: holders
+            },]
+
           Vue.set(this.chartOptions, "labels", dataXAxis)
           this.$forceUpdate()
           this.enable = true
@@ -178,7 +236,7 @@ export default {
     },
   },
   watch: {
-    contract (val) {
+    contract(val) {
       console.log("Re-draw chart")
       let from = Vue.moment().subtract(7.5, 'hours').format('YYYY-MM-DD hh:mm:ss')
       let to = Vue.moment().subtract(7, 'hours').format('YYYY-MM-DD hh:mm:ss')
