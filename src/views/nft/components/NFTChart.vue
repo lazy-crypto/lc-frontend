@@ -1,6 +1,6 @@
 <template>
   <div>
-    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="enable"></apexchart>
+    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="enable" ref="realtimeChart"></apexchart>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
         // },
         chart: {
           redrawOnParentResize: true,
-          height: "150px",
+          height: 350,
           type: 'line',
           zoom: {
             enabled: false,
@@ -241,6 +241,10 @@ export default {
       let from = Vue.moment().subtract(7.5, 'hours').format('YYYY-MM-DD hh:mm:ss')
       let to = Vue.moment().subtract(7, 'hours').format('YYYY-MM-DD hh:mm:ss')
       this.getChartData(from, to)
+    },
+    total_supply(val) {
+      Vue.set(this.chartOptions.yaxis[1],"max", val)
+      this.$refs.realtimeChart.updateOptions(this.chartOptions)
     }
   },
   created() {

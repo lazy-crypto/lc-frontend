@@ -3,8 +3,9 @@
     <a-list-item-meta :description="item.description">
       <!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
       <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
-      <a slot="title"><b>{{ item.title }}</b> | {{ item.id }} ({{metadata.rank}} / {{metadata.totalRarity}})</a>
+      <a slot="title"><b>{{ item.title }} {{ item.id }}</b> </a>
       <a slot="description"><b>{{ item.price }}</b></a>
+      <a slot="description" v-if="show_metadata"> ({{metadata.rank}} / {{metadata.totalRarity}})</a>
 
     </a-list-item-meta>
     <div slot="actions">
@@ -64,7 +65,8 @@ export default {
   data() {
     return {
       metadata: {},
-      ethw_wallet_url: process.env.VUE_APP_ETHW_WALLET_URL
+      ethw_wallet_url: process.env.VUE_APP_ETHW_WALLET_URL,
+      show_metadata: false
     }
   },
   methods: {
@@ -75,6 +77,7 @@ export default {
         console.log(response)
         if (response.hasOwnProperty("success") && response.success) {
           this.metadata = response.data
+          this.show_metadata = true
         }
       })
     },

@@ -1,6 +1,6 @@
 <template>
   <page-header-wrapper>
-    <NFTChart :contract="selected_collection"></NFTChart>
+    <NFTChart :contract="selected_collection" :total_supply="collection_data.total_quantity"></NFTChart>
     <a-card :bordered="false">
       <a-row>
         <a-col :sm="6" :xs="24">
