@@ -92,6 +92,7 @@
         },
         methods: {
             fetchDataNFT(token) {
+                this.loading = true
                 GetNFTAssetLists("ethw", token).then(response => {
                     if (response.hasOwnProperty('collection')) {
                         // Clear all old state, data
