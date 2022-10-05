@@ -4,6 +4,7 @@ const nftApi = {
   Collections: '/v1/nft/enable-collections',
   GetListAssets: '/v1/nft/sale-assets',
   GetMetadata: '/v1/nft/metadata',
+  GetChartData: '/v1/nft/chart',
 }
 
 /**
@@ -57,6 +58,19 @@ export function GetMetadata (chain = "ethw", contract, id) {
       chain: chain,
       contract: contract,
       id: id
+    }
+  })
+}
+
+export function GetChartData (chain = "ethw", contract, from, to) {
+  return request({
+    url: nftApi.GetChartData,
+    method: 'get',
+    params: {
+      chain: chain,
+      contract: contract,
+      from: from,
+      to: to
     }
   })
 }
