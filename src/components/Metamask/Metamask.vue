@@ -1,5 +1,6 @@
 <script>
 // Reference document
+// https://docs.metamask.io/guide/accessing-accounts.html
 // https://web3js.readthedocs.io/en/v1.2.9/web3.html#web3-instance
 // https://github.com/MikeCheng1208/vue-metamask
 import Web3 from "web3";
