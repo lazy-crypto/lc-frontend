@@ -1,6 +1,7 @@
 <template>
   <div>
-    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="enable" ref="realtimeChart"></apexchart>
+    <a-skeleton :active="loading" v-if="loading"/>
+    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="!loading" ref="realtimeChart"></apexchart>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ export default {
   name: "NFTChart",
   data() {
     return {
+      loading : true,
       series: [{
         name: '',
         type: 'column',
@@ -23,7 +25,6 @@ export default {
         type: 'line',
         data: []
       }],
-      enable: false,
       chartOptions: {
         colors : ['#16c784', '#a0a5ae'],
         // fill: {
@@ -230,8 +231,9 @@ export default {
 
           Vue.set(this.chartOptions, "labels", dataXAxis)
           this.$forceUpdate()
-          this.enable = true
         }
+      }).finally(() => {
+        this.loading = false
       })
     },
   },

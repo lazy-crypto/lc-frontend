@@ -1,41 +1,44 @@
 <template>
-  <a-list-item>
-    <a-list-item-meta :description="item.description">
-      <!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
-      <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
-      <a slot="title"><b>{{ item.title }} {{ item.id }}</b> </a>
-      <a slot="description"><b>{{ item.price }}</b></a>
-      <a slot="description" v-if="show_metadata"> ({{metadata.rank}} / {{metadata.totalRarity}})</a>
+  <div>
+    <a-skeleton avatar :paragraph="{ rows: 2 }" :active="loading" v-if="loading"/>
+    <a-list-item v-if="!loading">
+      <a-list-item-meta :description="item.description">
+        <!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
+        <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
+        <a slot="title"><b>{{ item.title }} {{ item.id }}</b> </a>
+        <a slot="description"><b>{{ item.price }}</b></a>
+        <a slot="description" v-if="show_metadata"> ({{ metadata.rank }} / {{ metadata.totalRarity }})</a>
 
-    </a-list-item-meta>
-    <div slot="actions">
-      <a @click="edit(item)">Edit</a>
-    </div>
-    <div slot="actions">
-      <a-dropdown>
-        <a-menu slot="overlay">
-          <a-menu-item><a>Goto</a></a-menu-item>
-        </a-menu>
-        <a>Add
-          <a-icon type="down"/>
-        </a>
-      </a-dropdown>
-    </div>
-    <div class="list-content">
-      <div class="list-content-item">
-        <span>Owner</span>
-        <p><a :href="ethw_wallet_url + item.owner" target="_blank">{{ item.owner }}</a></p>
+      </a-list-item-meta>
+      <div slot="actions">
+        <a @click="edit(item)">Edit</a>
       </div>
-      <div class="list-content-item">
-        <span>LISTED TIME</span>
-        <p>{{ item.startAt }}</p>
+      <div slot="actions">
+        <a-dropdown>
+          <a-menu slot="overlay">
+            <a-menu-item><a>Goto</a></a-menu-item>
+          </a-menu>
+          <a>Add
+            <a-icon type="down"/>
+          </a>
+        </a-dropdown>
       </div>
-      <div class="list-content-item">
-        <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status"
-                    style="width: 180px"/>
+      <div class="list-content">
+        <div class="list-content-item">
+          <span>Owner</span>
+          <p><a :href="ethw_wallet_url + item.owner" target="_blank">{{ item.owner }}</a></p>
+        </div>
+        <div class="list-content-item">
+          <span>LISTED TIME</span>
+          <p>{{ item.startAt }}</p>
+        </div>
+        <div class="list-content-item">
+          <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status"
+                      style="width: 180px"/>
+        </div>
       </div>
-    </div>
-  </a-list-item>
+    </a-list-item>
+  </div>
 </template>
 
 <script>
@@ -45,6 +48,10 @@ import {GetMetadata} from '@/api/nft'
 export default {
   name: 'NFTItem',
   props: {
+    loading: {
+      type: Boolean,
+      default: true
+    },
     item: {
       type: Object,
       default: {
@@ -64,6 +71,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       metadata: {},
       ethw_wallet_url: process.env.VUE_APP_ETHW_WALLET_URL,
       show_metadata: false
@@ -71,8 +79,7 @@ export default {
   },
   methods: {
     // Fetch list enable collections
-    getMetadata () {
-      console.log("Fetch metadata for " + this.item.id)
+    getMetadata() {
       GetMetadata("ethw", this.item.contract, this.item.id).then(response => {
         console.log(response)
         if (response.hasOwnProperty("success") && response.success) {
@@ -83,7 +90,7 @@ export default {
     },
   },
   watch: {
-    item (val){
+    item(val) {
       this.getMetadata()
     }
   }

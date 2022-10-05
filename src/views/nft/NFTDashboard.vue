@@ -32,7 +32,7 @@
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
-        <NFTItem :item="item" v-for="(item, index) in data_assets"></NFTItem>
+        <NFTItem :item="item" v-for="(item, index) in data_assets" :loading="loading"></NFTItem>
       </a-list>
     </a-card>
   </page-header-wrapper>
@@ -68,6 +68,7 @@
         },
         data() {
             return {
+                loading: true,
                 // selector 
                 selected_collection,
                 collections,
@@ -122,6 +123,8 @@
 
                         this.$forceUpdate()
                     }
+                }).finally(() => {
+                  this.loading = false
                 })
             },
             selectContract(token) {
