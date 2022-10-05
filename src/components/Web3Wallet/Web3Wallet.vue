@@ -1,7 +1,9 @@
 <template>
   <div id="w3-wallet">
     <vue-metamask ref="metamask" :initConnect="false"></vue-metamask>
-    <img src="/metamask.png" width="50" @click="connect">
+    <a-button @click="connect" @onComplete="onComplete">
+      <img src="/metamask.png" width="15px" style="margin-right: 15px">  Login
+    </a-button>
   </div>
 </template>
 <script>
@@ -14,12 +16,27 @@ export default {
   },
   data() {
     return {
+      user : {
+        name: "",
+        address: "",
+        type: "MAINNET",
+        network_id: 0
+      }
     }
   },
   methods: {
     connect(val) {
       this.$refs.metamask.init();
-      console.log("Connect web3 wallet" + val)
+    },
+    onComplete(val) {
+      console.log(val)
+      if (val.address && val.address !=="") {
+        this.user.name = val.address
+        this.user.address = val.address
+        this.user.network_id = val.netID
+      } else {
+        console.log(message)
+      }
     }
   }
 }

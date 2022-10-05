@@ -4,9 +4,9 @@
     <a-list-item v-if="!loading">
       <a-list-item-meta :description="item.description">
         <!--            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>-->
-        <img :src="item.avatar" slot="avatar" style="width:90px" alt="">
-        <a slot="title"><b>{{ item.title }} {{ item.id }}</b> </a>
-        <a slot="description"><b>{{ item.price }}</b></a>
+        <img :src="item.avatar" class="nft-avatar" slot="avatar" style="width:90px" alt="">
+        <a slot="title" :href="buildAssetLink(item.id)" target="_blank"><b>{{ item.title }} {{ item.id }}</b></a>
+        <a slot="description"><b>{{ parseInt(item.price  * 100) / 100 }}</b></a>
         <a slot="description" v-if="show_metadata"> ({{ metadata.rank }} / {{ metadata.totalRarity }})</a>
 
       </a-list-item-meta>
@@ -71,7 +71,6 @@ export default {
   },
   data() {
     return {
-      loading: true,
       metadata: {},
       ethw_wallet_url: process.env.VUE_APP_ETHW_WALLET_URL,
       show_metadata: false
@@ -88,6 +87,9 @@ export default {
         }
       })
     },
+    buildAssetLink (id) {
+      return process.env.VUE_APP_ETHW_ASSET_URL + this.item.contract + "/" + id
+    }
   },
   watch: {
     item(val) {

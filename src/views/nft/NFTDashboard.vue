@@ -7,7 +7,7 @@
           <info title="HOLDERS" :value="collection_data.total_owner" :bordered="true"/>
         </a-col>
         <a-col :sm="6" :xs="24">
-          <info title="FLOOR PRICE" :value="collection_data.floor_price" :bordered="true"/>
+          <info title="FLOOR PRICE" :value="parseInt(collection_data.floor_price * 100) / 100" :bordered="true"/>
         </a-col>
         <a-col :sm="6" :xs="24">
           <info title="TOTAL SUPPLY" :value="collection_data.total_quantity" :bordered="true"/>

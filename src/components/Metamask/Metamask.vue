@@ -97,7 +97,7 @@ export default {
       this.$emit("onComplete", {
         web3: this.web3,
         type,
-        metaMaskAddress: this.MetaMaskAddress,
+        address: this.MetaMaskAddress,
         message,
         netID: this.netID,
       });
