@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown v-if="this.$store.state.address" placement="bottomRight">
+  <a-dropdown v-if="this.$store.state.wallet && this.$store.state.wallet.address !== ''" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" class="antd-pro-global-header-index-avatar" />
       <span>{{ currentUser.name }}</span>
@@ -64,7 +64,7 @@ export default {
           // return new Promise((resolve, reject) => {
           //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1500)
           // }).catch(() => console.log('Oops errors!'))
-          return this.$store.dispatch('Logout').then(() => {
+          return this.$store.dispatch('LogoutWallet').then(() => {
             // this.$router.push({ name: 'login' })
           })
         },

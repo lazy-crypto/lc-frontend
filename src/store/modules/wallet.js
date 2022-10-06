@@ -19,7 +19,7 @@ const w3wallet = {
       state.wallet = wallet
     },
     SET_ADDRESS: (state, address) => {
-      state.token = address
+      state.address = address
     },
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
