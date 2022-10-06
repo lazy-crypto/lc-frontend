@@ -51,8 +51,6 @@ export default {
     checkAccounts() {
       if (this.web3 === null) return;
       this.web3.eth.getAccounts((err, accounts) => {
-        console.log();
-
         if (err != null)
           return this.Log(this.MetamaskMsg.NETWORK_ERROR, "NETWORK_ERROR");
         if (accounts.length === 0) {
@@ -95,11 +93,12 @@ export default {
       const message = this.userMessage === "null" ? msg : this.userMessage;
       this.type = type;
       this.$emit("onComplete", {
-        web3: this.web3,
-        type,
-        address: this.MetaMaskAddress,
-        message,
-        netID: this.netID,
+        "web3": this.web3,
+        "type": type,
+        "address": this.MetaMaskAddress,
+        "message": message,
+        "net_id": this.netID,
+        "name": "metamask"
       });
     },
     web3TimerCheck(web3) {
