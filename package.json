@@ -17,6 +17,7 @@
     "@ant-design-vue/pro-layout": "^1.0.11",
     "@antv/data-set": "^0.10.2",
     "ant-design-vue": "^1.7.8",
+    "apexcharts": "^3.35.5",
     "axios": "^0.26.1",
     "core-js": "^3.21.1",
     "enquire.js": "^2.1.6",
@@ -26,18 +27,22 @@
     "md5": "^2.3.0",
     "mockjs2": "1.0.8",
     "moment": "^2.29.2",
+    "moment-timezone": "^0.5.37",
     "nprogress": "^0.2.0",
     "store": "^2.0.12",
     "viser-vue": "^2.4.8",
     "vue": "^2.6.14",
+    "vue-apexcharts": "^1.6.2",
     "vue-clipboard2": "^0.2.1",
     "vue-cropper": "0.4.9",
     "vue-i18n": "^8.27.1",
+    "vue-moment": "^4.1.0",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.5.3",
     "vue-svg-component-runtime": "^1.0.1",
     "vuex": "^3.6.2",
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^3.1.1",
+    "web3": "^1.8.0"
   },
   "devDependencies": {
     "@ant-design/colors": "^3.2.2",
@@ -57,7 +62,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.0.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-html": "^5.0.5",
     "eslint-plugin-vue": "^5.2.3",
     "file-loader": "^6.2.0",
@@ -89,6 +94,5 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "gitHooks": {
-  }
+  "gitHooks": {}
 }

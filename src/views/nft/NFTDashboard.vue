@@ -1,5 +1,6 @@
 <template>
   <page-header-wrapper>
+    <NFTChart :contract="selected_collection"></NFTChart>
     <a-card :bordered="false">
       <a-row>
         <a-col :sm="6" :xs="24">
@@ -40,9 +41,10 @@
 <script>
     import TaskForm from './modules/TaskForm'
     import Info from './components/Info'
-    import NFTItem from "@/views/ethw/components/NFTItem";
+    import NFTItem from "@/views/nft/components/NFTItem";
     import {GetCollections, GetNFTAssetLists} from '@/api/nft'
     import NFTCollection from "@/domain/entities/NFTCollection"
+    import NFTChart from "@/views/nft/components/NFTChart";
     // import EthWService from './../../infrastructures/'
     let collection_data;
     let data_assets;
@@ -59,9 +61,10 @@
     export default {
         name: 'DashboardNFT',
         components: {
-            TaskForm,
-            Info,
-            NFTItem
+          NFTChart,
+          TaskForm,
+          Info,
+          NFTItem
         },
         data() {
             return {

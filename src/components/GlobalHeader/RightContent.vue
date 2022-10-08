@@ -1,6 +1,7 @@
 <template>
   <div :class="wrpCls">
-    <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
+<!--    <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />-->
+    <Web3Wallet></Web3Wallet>
     <select-lang :class="prefixCls" />
   </div>
 </template>
@@ -8,12 +9,14 @@
 <script>
 import AvatarDropdown from './AvatarDropdown'
 import SelectLang from '@/components/SelectLang'
+import Web3Wallet from "@/components/Web3Wallet/Web3Wallet";
 
 export default {
   name: 'RightContent',
   components: {
     AvatarDropdown,
-    SelectLang
+    SelectLang,
+    Web3Wallet
   },
   props: {
     prefixCls: {
