@@ -1,6 +1,7 @@
 <template>
   <div>
-    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="enable"></apexchart>
+    <a-skeleton :active="loading" v-if="loading"/>
+    <apexchart type="line" height="350" :options="chartOptions" :series="series" v-if="!loading" ref="realtimeChart"></apexchart>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ export default {
   name: "NFTChart",
   data() {
     return {
+      loading : true,
       series: [{
         name: '',
         type: 'column',
@@ -23,7 +25,6 @@ export default {
         type: 'line',
         data: []
       }],
-      enable: false,
       chartOptions: {
         colors : ['#16c784', '#a0a5ae'],
         // fill: {
@@ -34,7 +35,7 @@ export default {
         // },
         chart: {
           redrawOnParentResize: true,
-          height: "150px",
+          height: 350,
           type: 'line',
           zoom: {
             enabled: false,
@@ -230,8 +231,9 @@ export default {
 
           Vue.set(this.chartOptions, "labels", dataXAxis)
           this.$forceUpdate()
-          this.enable = true
         }
+      }).finally(() => {
+        this.loading = false
       })
     },
   },
@@ -241,6 +243,10 @@ export default {
       let from = Vue.moment().subtract(7.5, 'hours').format('YYYY-MM-DD hh:mm:ss')
       let to = Vue.moment().subtract(7, 'hours').format('YYYY-MM-DD hh:mm:ss')
       this.getChartData(from, to)
+    },
+    total_supply(val) {
+      Vue.set(this.chartOptions.yaxis[1],"max", val)
+      this.$refs.realtimeChart.updateOptions(this.chartOptions)
     }
   },
   created() {

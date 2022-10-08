@@ -1,7 +1,7 @@
 <template>
   <div :class="wrpCls">
-<!--    <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />-->
-    <Web3Wallet></Web3Wallet>
+    <avatar-dropdown :menu="showMenu" :class="prefixCls" />
+<!--    <Web3Wallet></Web3Wallet>-->
     <select-lang :class="prefixCls" />
   </div>
 </template>

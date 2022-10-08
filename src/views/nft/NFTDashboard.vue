@@ -1,13 +1,13 @@
 <template>
   <page-header-wrapper>
-    <NFTChart :contract="selected_collection"></NFTChart>
+    <NFTChart :contract="selected_collection" :total_supply="collection_data.total_quantity"></NFTChart>
     <a-card :bordered="false">
       <a-row>
         <a-col :sm="6" :xs="24">
           <info title="HOLDERS" :value="collection_data.total_owner" :bordered="true"/>
         </a-col>
         <a-col :sm="6" :xs="24">
-          <info title="FLOOR PRICE" :value="collection_data.floor_price" :bordered="true"/>
+          <info title="FLOOR PRICE" :value="parseInt(collection_data.floor_price * 100) / 100" :bordered="true"/>
         </a-col>
         <a-col :sm="6" :xs="24">
           <info title="TOTAL SUPPLY" :value="collection_data.total_quantity" :bordered="true"/>
@@ -32,7 +32,7 @@
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
-        <NFTItem :item="item" v-for="(item, index) in data_assets"></NFTItem>
+        <NFTItem :item="item" v-for="(item, index) in data_assets" :loading="loading"></NFTItem>
       </a-list>
     </a-card>
   </page-header-wrapper>
@@ -68,6 +68,7 @@
         },
         data() {
             return {
+                loading: true,
                 // selector 
                 selected_collection,
                 collections,
@@ -91,6 +92,7 @@
         },
         methods: {
             fetchDataNFT(token) {
+                this.loading = true
                 GetNFTAssetLists("ethw", token).then(response => {
                     if (response.hasOwnProperty('collection')) {
                         // Clear all old state, data
@@ -122,6 +124,8 @@
 
                         this.$forceUpdate()
                     }
+                }).finally(() => {
+                  this.loading = false
                 })
             },
             selectContract(token) {

@@ -1,5 +1,6 @@
 <script>
 // Reference document
+// https://docs.metamask.io/guide/accessing-accounts.html
 // https://web3js.readthedocs.io/en/v1.2.9/web3.html#web3-instance
 // https://github.com/MikeCheng1208/vue-metamask
 import Web3 from "web3";
@@ -50,8 +51,6 @@ export default {
     checkAccounts() {
       if (this.web3 === null) return;
       this.web3.eth.getAccounts((err, accounts) => {
-        console.log();
-
         if (err != null)
           return this.Log(this.MetamaskMsg.NETWORK_ERROR, "NETWORK_ERROR");
         if (accounts.length === 0) {
@@ -94,11 +93,12 @@ export default {
       const message = this.userMessage === "null" ? msg : this.userMessage;
       this.type = type;
       this.$emit("onComplete", {
-        web3: this.web3,
-        type,
-        metaMaskAddress: this.MetaMaskAddress,
-        message,
-        netID: this.netID,
+        "web3": this.web3,
+        "type": type,
+        "address": this.MetaMaskAddress,
+        "message": message,
+        "net_id": this.netID,
+        "name": "metamask"
       });
     },
     web3TimerCheck(web3) {

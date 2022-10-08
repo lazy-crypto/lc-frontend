@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
   const token = storage.get(ACCESS_TOKEN)
   
   // Ignore login page
-  if (token) {
+  if (true) {
     if (to.path === loginRoutePath) {
       next({ path: defaultRoutePath })
       NProgress.done()
@@ -54,8 +54,8 @@ router.beforeEach((to, from, next) => {
           })
           .catch(() => {
             notification.error({
-              message: '错误',
-              description: '请求用户信息失败，请重试'
+              message: 'Error',
+              description: 'Login failed'
             })
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
             store.dispatch('Logout').then(() => {
@@ -68,7 +68,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (allowList.includes(to.name)) {
-      // 在免登录名单，直接进入
       next()
     } else {
       next({ path: loginRoutePath, query: { redirect: to.fullPath } })

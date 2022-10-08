@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
+  <a-dropdown v-if="this.$store.state.wallet && this.$store.state.wallet.address !== ''" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" class="antd-pro-global-header-index-avatar" />
       <span>{{ currentUser.name }}</span>
@@ -23,20 +23,27 @@
     </template>
   </a-dropdown>
   <span v-else>
-    <a-spin size="small" :style="{ marginLeft: 8, marginRight: 8 }" />
+    <Web3Wallet></Web3Wallet>
   </span>
 </template>
 
 <script>
 import { Modal } from 'ant-design-vue'
+import Web3Wallet from "@/components/Web3Wallet/Web3Wallet";
 
 export default {
   name: 'AvatarDropdown',
+  components: {
+    Web3Wallet
+  },
+  data() {
+    return {
+      currentUser: {
+        name: ""
+      },
+    }
+  },
   props: {
-    currentUser: {
-      type: Object,
-      default: () => null
-    },
     menu: {
       type: Boolean,
       default: true
@@ -57,8 +64,8 @@ export default {
           // return new Promise((resolve, reject) => {
           //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1500)
           // }).catch(() => console.log('Oops errors!'))
-          return this.$store.dispatch('Logout').then(() => {
-            this.$router.push({ name: 'login' })
+          return this.$store.dispatch('LogoutWallet').then(() => {
+            // this.$router.push({ name: 'login' })
           })
         },
         onCancel () {}
